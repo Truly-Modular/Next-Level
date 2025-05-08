@@ -1,0 +1,6 @@
+
+•	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ûîà¼þÿÿÿÿ8á¥ù„ë2J$3c8dd7ed-4d83-4dcd-936f-4ea588933019
+|
+java:S1854#"9Remove this useless assignment to local variable "newXP".(Ÿ’âù8â¥ù„ë2J$27b93531-7d0e-43fb-8af5-855f3e1cc3f0
+m
+java:S1481#"*Remove this unused "newXP" local variable.(Ÿ’âù8å¥ù„ë2J$5b4e5159-0e29-43c0-aad8-477a424ff492
