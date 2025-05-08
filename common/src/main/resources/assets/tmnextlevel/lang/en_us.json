@@ -1,0 +1,47 @@
+{
+    "miapi.upgrade.cost": "Cost (%s)",
+    "miapi.upgrade.cannot.afford": "Cannot afford",
+    "miapi.ui.edit_option.hover.upgrade": "Upgrades",
+
+    "miapi.upgrade.hover.1": "XP : [%s/%s]",
+    "miapi.upgrade.hover.2": "Available Levels : %s",
+    "miapi.upgrade.hover.3": "Upgrades : %s",
+    "miapi.upgrade.hover.4": "Xp is gained by using durability.",
+    "miapi.upgrade.hover.5": "Durability related enchantments do not affect the XP Gain ",
+
+    "miapi.upgrade.tm_next_level.tm_arsenal/rapier": "Piercing",
+    "miapi.upgrade.tm_next_level.tm_arsenal/rapier.description": "Increases Armor Penetration",
+    "miapi.upgrade.tm_next_level.tm_arsenal/slashing": "Slashing",
+    "miapi.upgrade.tm_next_level.tm_arsenal/slashing.description": "Increases Slashing, great against unarmored Targets",
+
+    "miapi.upgrade.tm_next_level.tm_arsenal/tool/axe": "Woodcutting",
+    "miapi.upgrade.tm_next_level.tm_arsenal/tool/axe.description": "Increases Woodcutting speed.",
+
+    "miapi.upgrade.tm_next_level.tm_arsenal/tool/pickaxe": "Mining",
+    "miapi.upgrade.tm_next_level.tm_arsenal/tool/pickaxe.description": "Increases Stone mining speed.",
+
+    "miapi.upgrade.tm_next_level.tm_arsenal/tool/shovel": "Digging",
+    "miapi.upgrade.tm_next_level.tm_arsenal/tool/shovel.description": "Increases digging speed.",
+
+    "miapi.upgrade.tm_next_level.tm_arsenal/tool/hoe": "Fast Farming",
+    "miapi.upgrade.tm_next_level.tm_arsenal/tool/hoe.description": "Increases Hoe speed.",
+
+    "miapi.upgrade.tm_next_level.tm_arsenal/tool/cutter/leaves": "LeaveCutter",
+    "miapi.upgrade.tm_next_level.tm_arsenal/tool/cutter/leaves.description": "Allows the Axe to also cut Leaves.",
+
+    "miapi.upgrade.tm_next_level.tm_arsenal/tool/cutter/size": "Woodcutting",
+    "miapi.upgrade.tm_next_level.tm_arsenal/tool/cutter/size.description": "Increases amount of wood cut.",
+
+    "miapi.upgrade.tm_next_level.tm_arsenal/tool/excavator/depth": "Depth",
+    "miapi.upgrade.tm_next_level.tm_arsenal/tool/excavator/depth.description": "Increases the depth of the Area Mining.",
+
+    "miapi.upgrade.tm_next_level.tm_arsenal/tool/excavator/size": "Size",
+    "miapi.upgrade.tm_next_level.tm_arsenal/tool/excavator/size.description": "Increases the area by one block to each side except depth.",
+
+    "miapi.upgrade.tm_next_level.tm_arsenal/tool/hammer/depth": "Depth",
+    "miapi.upgrade.tm_next_level.tm_arsenal/tool/hammer/depth.description": "Increases the depth of the Area Mining.",
+
+    "miapi.upgrade.tm_next_level.tm_arsenal/tool/hammer/size": "Size",
+    "miapi.upgrade.tm_next_level.tm_arsenal/tool/hammer/size.description": "Increases the area by one block to each side except depth."
+
+}
