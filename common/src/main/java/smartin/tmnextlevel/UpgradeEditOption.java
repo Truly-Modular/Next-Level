@@ -1,22 +1,16 @@
-package smartin.tmnextlevel.upgrade;
+package smartin.tmnextlevel;
 
 import com.mojang.serialization.JsonOps;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import smartin.miapi.Miapi;
 import smartin.miapi.client.gui.InteractAbleWidget;
-import smartin.miapi.client.gui.SimpleButton;
-import smartin.miapi.client.gui.crafting.CraftingScreen;
 import smartin.miapi.item.modular.VisualModularItem;
 import smartin.miapi.modules.ItemModule;
-import smartin.miapi.modules.MiapiPermissions;
 import smartin.miapi.modules.ModuleInstance;
 import smartin.miapi.modules.conditions.ConditionManager;
 import smartin.miapi.modules.edit_options.EditOption;
@@ -48,8 +42,8 @@ public class UpgradeEditOption implements EditOption {
         instance = instance.copy();
 
         Map<ResourceLocation, Integer> rawUpgradeMap = new HashMap<>();
-        if (instance.moduleData.containsKey(Upgrade.upgradeId)) {
-            Upgrade.MODULE_UPGRADE_ID_CODEC.decode(JsonOps.INSTANCE, instance.moduleData.get(Upgrade.upgradeId))
+        if (instance.moduleData.containsKey(Upgrade.UPGRADE_ID)) {
+            Upgrade.MODULE_UPGRADE_ID_CODEC.decode(JsonOps.INSTANCE, instance.moduleData.get(Upgrade.UPGRADE_ID))
                     .result().ifPresent(pair -> rawUpgradeMap.putAll(pair.getFirst()));
         }
 
@@ -72,7 +66,7 @@ public class UpgradeEditOption implements EditOption {
         rawUpgradeMap.put(selection.upgradeId(), currentLevel + 1);
 
         instance.moduleData.put(
-                Upgrade.upgradeId,
+                Upgrade.UPGRADE_ID,
                 Upgrade.MODULE_UPGRADE_ID_CODEC.encodeStart(JsonOps.INSTANCE, rawUpgradeMap).getOrThrow()
         );
 
@@ -97,9 +91,9 @@ public class UpgradeEditOption implements EditOption {
 
             Map<ResourceLocation, Integer> upgradeMap = Map.of();
             List<Upgrade> existingUpgrades = new ArrayList<>();
-            if (instance.moduleData.containsKey(Upgrade.upgradeId)) {
+            if (instance.moduleData.containsKey(Upgrade.UPGRADE_ID)) {
                 var decodeResult = Upgrade.MODULE_UPGRADE_ID_CODEC
-                        .decode(JsonOps.INSTANCE, instance.moduleData.get(Upgrade.upgradeId))
+                        .decode(JsonOps.INSTANCE, instance.moduleData.get(Upgrade.UPGRADE_ID))
                         .result();
                 if (decodeResult.isPresent()) {
                     upgradeMap = decodeResult.get().getFirst();
@@ -164,9 +158,9 @@ public class UpgradeEditOption implements EditOption {
     public static int getTotalUpgradeLevel(ItemStack stack) {
         int total = 0;
         for (ModuleInstance instance : ItemModule.getModules(stack).allSubModules()) {
-            if (instance.moduleData.containsKey(Upgrade.upgradeId)) {
+            if (instance.moduleData.containsKey(Upgrade.UPGRADE_ID)) {
                 var decodeResult = Upgrade.MODULE_UPGRADE_ID_CODEC
-                        .decode(JsonOps.INSTANCE, instance.moduleData.get(Upgrade.upgradeId))
+                        .decode(JsonOps.INSTANCE, instance.moduleData.get(Upgrade.UPGRADE_ID))
                         .result();
                 if (decodeResult.isPresent()) {
                     Map<ResourceLocation, Integer> map = decodeResult.get().getFirst();

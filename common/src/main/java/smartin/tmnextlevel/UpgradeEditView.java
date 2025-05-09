@@ -1,4 +1,4 @@
-package smartin.tmnextlevel.upgrade;
+package smartin.tmnextlevel;
 
 import com.mojang.serialization.JsonOps;
 import net.fabricmc.api.EnvType;
@@ -123,9 +123,9 @@ public class UpgradeEditView extends InteractAbleWidget {
 
             Map<ResourceLocation, Integer> upgradeMap = Map.of();
             List<Upgrade> existingUpgrades = new ArrayList<>();
-            if (instance.moduleData.containsKey(Upgrade.upgradeId)) {
+            if (instance.moduleData.containsKey(Upgrade.UPGRADE_ID)) {
                 var decodeResult = Upgrade.MODULE_UPGRADE_ID_CODEC
-                        .decode(JsonOps.INSTANCE, instance.moduleData.get(Upgrade.upgradeId))
+                        .decode(JsonOps.INSTANCE, instance.moduleData.get(Upgrade.UPGRADE_ID))
                         .result();
                 if (decodeResult.isPresent()) {
                     upgradeMap = decodeResult.get().getFirst();

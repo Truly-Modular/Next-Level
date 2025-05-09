@@ -15,14 +15,6 @@ E
 neoforge/build.gradle,5\7\570581ffb12ce09d95e7cc044bb3e87e79a353be
 A
 gradle.properties,2\a\2afbb999f001938c88fa43fc2ef52abf0f8213e4
-m
-=common/src/main/java/smartin/tmnextlevel/upgrade/Upgrade.java,7\0\702cba8235ef6bf1278e9befbd19c73c35e958e4
-w
-Gcommon/src/main/java/smartin/tmnextlevel/upgrade/UpgradeEditOption.java,a\c\ac23a95f414c04b91c8ee4da71e0c8d93f7a25d4
-u
-Ecommon/src/main/java/smartin/tmnextlevel/upgrade/UpgradeEditView.java,6\f\6fb28177bb4e97a1d1d4cc4d4b2e5ee1733a5b06
-v
-Fcommon/src/main/java/smartin/tmnextlevel/upgrade/UpgradeSelection.java,b\d\bdcd02f81507775d49a4e50287ab7aba408f453f
 r
 Bcommon/src/main/java/smartin/tmnextlevel/mixin/ItemstackMixin.java,8\6\86a9b07297217e3a7436d8d8b8f1036a475a8d47
 :
@@ -38,3 +30,13 @@ X
 (gradle/wrapper/gradle-wrapper.properties,f\b\fbe448ebfc3eb2d4e308f6b8b043666f5b57235e
 ;
 LICENSE.txt,7\9\79b82ce9b64a924266619555502f890dd80c83b9
+n
+>common/src/main/java/smartin/tmnextlevel/UpgradeSelection.java,0\9\0905ac6468aa955c5852835b7c0b058e5abce36b
+m
+=common/src/main/java/smartin/tmnextlevel/UpgradeEditView.java,4\5\45d1f7fea6b470e56f1abef33d8e6ddd70e44c5d
+e
+5common/src/main/java/smartin/tmnextlevel/Upgrade.java,3\3\3382c5d270c632df310e92db7a6d9b2d3852aaf9
+h
+8common/src/main/java/smartin/tmnextlevel/XpCommands.java,0\3\03695a283c4279d6c623a222910174e9e81ab5ea
+o
+?common/src/main/java/smartin/tmnextlevel/UpgradeEditOption.java,0\d\0d8cecd4b4cea1d21b00536b48e6e2857dabb5b6

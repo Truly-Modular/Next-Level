@@ -1,4 +1,4 @@
-package smartin.tmnextlevel.upgrade;
+package smartin.tmnextlevel;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
