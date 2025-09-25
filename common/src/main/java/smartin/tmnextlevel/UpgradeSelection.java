@@ -13,21 +13,23 @@ import smartin.miapi.modules.properties.slot.SlotProperty;
 import java.util.List;
 import java.util.Optional;
 
-public record UpgradeSelection(List<String> slotLocation, ResourceLocation upgradeId) {
+public record UpgradeSelection(List<String> slotLocation, ResourceLocation upgradeId, int levels) {
     public static final Codec<UpgradeSelection> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     Codec.STRING.listOf().fieldOf("slot_location").forGetter(UpgradeSelection::slotLocation),
-                    ResourceLocation.CODEC.fieldOf("upgrade_id").forGetter(UpgradeSelection::upgradeId)
+                    ResourceLocation.CODEC.fieldOf("upgrade_id").forGetter(UpgradeSelection::upgradeId),
+                    Codec.INT.fieldOf("levels").forGetter(UpgradeSelection::levels)
             ).apply(instance, UpgradeSelection::new)
     );
+
     public static final StreamCodec<ByteBuf, UpgradeSelection> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
 
-    // Convenience constructor
-    public UpgradeSelection(ModuleInstance moduleInstance, ResourceLocation upgradeId) {
-        this(SlotProperty.getLocationSave(moduleInstance), upgradeId);
+    public UpgradeSelection(ModuleInstance moduleInstance, ResourceLocation upgradeId, int levels) {
+        this(SlotProperty.getLocationSave(moduleInstance), upgradeId, levels);
     }
 
     public Optional<ModuleInstance> resolveModule(ItemStack itemStack) {
         return SlotProperty.findSlot(itemStack, slotLocation).map(a -> a.inSlot);
     }
 }
+

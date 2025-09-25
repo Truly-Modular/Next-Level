@@ -1,0 +1,30 @@
+{
+    "tag": "sharp",
+    "condition": {
+        "type": "true"
+    },
+    "max": "5",
+    "incompatible": [
+        "tm_next_level:tm_arsenal/weapon/slashing"
+    ],
+    "properties": {
+        "1": {
+            "merge": {
+                "attributes": [
+                    {
+                        "attribute": "generic.attack_damage",
+                        "value": "0.5",
+                        "operation": "+",
+                        "slot": "mainhand"
+                    },
+                    {
+                        "attribute": "generic.attack_damage",
+                        "value": "0.05",
+                        "operation": "**",
+                        "slot": "mainhand"
+                    }
+                ]
+            }
+        }
+    }
+}

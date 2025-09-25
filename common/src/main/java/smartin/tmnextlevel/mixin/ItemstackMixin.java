@@ -9,14 +9,15 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import smartin.tmnextlevel.Upgrade;
+import smartin.miapi.item.modular.ModularItem;
+import smartin.tmnextlevel.UpgradeEditOption;
 
 import java.util.function.Consumer;
 
 import static smartin.tmnextlevel.UpgradeEditOption.*;
 
 @Mixin(ItemStack.class)
-public class ItemstackMixin {
+public abstract class ItemstackMixin {
 
     @Inject(
             method = "hurtAndBreak",
@@ -24,20 +25,15 @@ public class ItemstackMixin {
             cancellable = true
     )
     public void tm_next_level$update_message(int damage, ServerLevel serverLevel, ServerPlayer serverPlayer, Consumer<Item> consumer, CallbackInfo ci) {
-        ItemStack stack = (ItemStack)(Object) this;
+        ItemStack stack = (ItemStack) (Object) this;
+        if (ModularItem.isModularItem(stack)) {
+            int usedLevels = UpgradeEditOption.getTotalUpgradeLevel(stack);
+            int oldXP = getItemXP(stack);
+            int newXp = damage + oldXP;
 
-        int oldXP = getItemXP(stack);
-        int oldLevel = getTotalUpgradeLevel(stack);
-        Upgrade.xpCost(oldLevel);
-
-        // Simulate XP gain on use (you can change this logic)
-        int xpGain = damage; // For example: 1 XP per use
-        int newXP = oldXP + xpGain;
-
-        int newLevel = getTotalUpgradeLevel(stack);
-
-        if (newLevel > oldLevel) {
-            serverPlayer.sendSystemMessage(Component.literal("Your item has leveled up! Level " + newLevel));
+            if (spendAbleLevel(usedLevels, oldXP) < spendAbleLevel(usedLevels, newXp)) {
+                serverPlayer.sendSystemMessage(Component.translatable("miapi.tm_next_level.upgrade_chat_message",stack.getDisplayName(),spendAbleLevel(usedLevels, newXp)));
+            }
         }
     }
 }

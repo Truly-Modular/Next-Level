@@ -1,0 +1,36 @@
+{
+    "tag": "heavy_blade",
+    "condition": {
+        "type": "true"
+    },
+    "max": "1",
+    "incompatible": [
+    ],
+    "properties": {
+        "1": {
+            "merge": {
+                "ability_context": {
+                    "tmnextlevel:weapon_ability": {
+                        "type": "miapi:heavy_attack",
+                        "data": {
+                            "damage": 2,
+                            "sweeping": 3,
+                            "range": 5,
+                            "minHold": 15,
+                            "cooldown": 60,
+                            "particle": {
+                                "emit": {
+                                    "type": "minecraft:angry_villager"
+                                },
+                                "frequency": 1,
+                                "count": 5,
+                                "speed": 3,
+                                "startAfter": 0
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

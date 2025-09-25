@@ -3,22 +3,46 @@
     "miapi.upgrade.cannot.afford": "Cannot afford",
     "miapi.ui.edit_option.hover.upgrade": "Upgrades",
 
+    "tmnextlevel.ui.blocked.upgrade": "This Upgrade can only be installed on one module!",
+
+    "tmnextlevel.ui.points": "Points: %s",
+    "tmnextlevel.ui.progress": "%s%%",
+    "tmnextlevel.ui.module": "%s",
+
+    "tmnextlevel.ui.hover.xp": "XP: %s / %s",
+    "tmnextlevel.ui.hover.points": "Available Points: %s",
+    "tmnextlevel.ui.hover.used": "Used Levels: %s",
+
+    "tmnextlevel.ui.row.name_cost": "%s (Cost %s)",
+    "tmnextlevel.ui.row.level": "Level %s",
+    "tmnextlevel.ui.row.level.pending": "Level %s → %s",
+    "tmnextlevel.ui.row.level.none": "Not unlocked",
+
     "miapi.upgrade.hover.1": "XP : [%s/%s]",
     "miapi.upgrade.hover.2": "Available Levels : %s",
     "miapi.upgrade.hover.3": "Upgrades : %s",
     "miapi.upgrade.hover.4": "Xp is gained by using durability.",
     "miapi.upgrade.hover.5": "Durability related enchantments do not affect the XP Gain ",
 
-    "miapi.upgrade.tm_next_level.tm_arsenal/rapier": "Piercing",
-    "miapi.upgrade.tm_next_level.tm_arsenal/rapier.description": "Increases Armor Penetration",
-    "miapi.upgrade.tm_next_level.tm_arsenal/slashing": "Slashing",
-    "miapi.upgrade.tm_next_level.tm_arsenal/slashing.description": "Increases Slashing, great against unarmored Targets",
+    "miapi.tm_next_level.upgrade_chat_message": "%s has Leveled UP!. Now %s points available.",
+
+    "miapi.upgrade.tm_next_level.tm_arsenal/weapon/rapier": "Piercing",
+    "miapi.upgrade.tm_next_level.tm_arsenal/weapon/rapier.description": "Increases Armor Penetration",
+    "miapi.upgrade.tm_next_level.tm_arsenal/weapon/slashing": "Slashing",
+    "miapi.upgrade.tm_next_level.tm_arsenal/weapon/slashing.description": "Increases Slashing, great against unarmored Targets",
+    "miapi.upgrade.tm_next_level.tm_arsenal/weapon/sharp": "Sharpened",
+    "miapi.upgrade.tm_next_level.tm_arsenal/weapon/sharp.description": "Increases raw Damage",
+    "miapi.upgrade.tm_next_level.tm_arsenal/weapon/sweep": "Sweeping",
+    "miapi.upgrade.tm_next_level.tm_arsenal/weapon/sweep.description": "Increases Sweeping Ratio",
 
     "miapi.upgrade.tm_next_level.tm_arsenal/tool/axe": "Woodcutting",
     "miapi.upgrade.tm_next_level.tm_arsenal/tool/axe.description": "Increases Woodcutting speed.",
 
+    "miapi.upgrade.tm_next_level.tm_arsenal/tool/vein_pickaxe": "Vein Mining",
+    "miapi.upgrade.tm_next_level.tm_arsenal/tool/vein_pickaxe.description": "Allows Vein-Mining of ores.",
     "miapi.upgrade.tm_next_level.tm_arsenal/tool/pickaxe": "Mining",
     "miapi.upgrade.tm_next_level.tm_arsenal/tool/pickaxe.description": "Increases Stone mining speed.",
+
 
     "miapi.upgrade.tm_next_level.tm_arsenal/tool/shovel": "Digging",
     "miapi.upgrade.tm_next_level.tm_arsenal/tool/shovel.description": "Increases digging speed.",

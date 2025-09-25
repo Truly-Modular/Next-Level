@@ -40,3 +40,17 @@ h
 8common/src/main/java/smartin/tmnextlevel/XpCommands.java,0\3\03695a283c4279d6c623a222910174e9e81ab5ea
 o
 ?common/src/main/java/smartin/tmnextlevel/UpgradeEditOption.java,0\d\0d8cecd4b4cea1d21b00536b48e6e2857dabb5b6
+d
+4common/src/main/java/smartin/tmnextlevel/magic_.json,0\d\0d0083c92bf00442c20899e50cc84c6ae67b620a
+d
+4common/src/main/java/smartin/tmnextlevel/command.txt,3\9\39a66748e4736c6bd89d686dc27dff54134f2464
+b
+2common/src/main/java/smartin/tmnextlevel/test.json,a\d\adc265e7d390c3b055f5c2a42f3d8813efd0791d
+c
+3common/src/main/java/smartin/tmnextlevel/test2.json,9\f\9f132410175e658433233b3399515942d8ebd1ca
+a
+1common/src/main/java/smartin/tmnextlevel/test.txt,7\e\7e96487645810f37365d9000b272e9826f11f4b6
+c
+3common/src/main/java/smartin/tmnextlevel/test3.json,9\e\9e1839c393c35e8b6995fa1427b2c359dd3ac76a
+a
+1common/src/main/java/smartin/tmnextlevel/asd.json,8\d\8d3473a7379bc07391e94f4fdd1f0e1756fe742b

@@ -1,6 +1,5 @@
 package smartin.tmnextlevel;
 
-
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.component.DataComponentType;
@@ -12,6 +11,7 @@ import smartin.miapi.Miapi;
 import smartin.miapi.modules.PropertyHolder;
 import smartin.miapi.modules.conditions.ConditionManager;
 import smartin.miapi.modules.conditions.ModuleCondition;
+import smartin.miapi.modules.conditions.TrueCondition;
 import smartin.miapi.registries.MiapiRegistry;
 
 import java.util.Collection;
@@ -24,21 +24,25 @@ public record Upgrade(
         Map<Integer, PropertyHolder> properties,
         List<ResourceLocation> incompatible,
         int max,
-        int cost
+        int cost,
+        boolean unique
 ) {
     public static final MiapiRegistry<Upgrade> UPGRADE_MIAPI_REGISTRY = MiapiRegistry.getInstance(Upgrade.class);
     public static final ResourceLocation UPGRADE_ID = Miapi.id("upgrade");
 
-    public static final Codec<Integer> INT_CODEC = Codec.withAlternative(Codec.STRING.xmap(Integer::valueOf, i -> "" + i), Codec.INT);
+    public static final Codec<Integer> INT_CODEC =
+            Codec.withAlternative(Codec.STRING.xmap(Integer::valueOf, i -> "" + i), Codec.INT);
 
     public static final Codec<Upgrade> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.STRING.fieldOf("tag").forGetter(Upgrade::moduleTag),
-            ConditionManager.CONDITION_CODEC_DIRECT.fieldOf("condition").forGetter(Upgrade::condition),
+            ConditionManager.CONDITION_CODEC_DIRECT.optionalFieldOf("condition", new TrueCondition()).forGetter(Upgrade::condition),
             Codec.unboundedMap(INT_CODEC, PropertyHolder.MAP_CODEC.codec()).fieldOf("properties").forGetter(Upgrade::properties),
             ResourceLocation.CODEC.listOf().optionalFieldOf("incompatible", List.of()).forGetter(Upgrade::incompatible),
             INT_CODEC.optionalFieldOf("max", 0).forGetter(Upgrade::max),
-            INT_CODEC.optionalFieldOf("cost", 1).forGetter(Upgrade::cost)
+            INT_CODEC.optionalFieldOf("cost", 1).forGetter(Upgrade::cost),
+            Codec.BOOL.optionalFieldOf("unique", true).forGetter(Upgrade::unique)
     ).apply(instance, Upgrade::new));
+
     public static final Codec<Map<ResourceLocation, Integer>> MODULE_UPGRADE_ID_CODEC =
             Codec.unboundedMap(ResourceLocation.CODEC, INT_CODEC);
 
@@ -68,6 +72,4 @@ public record Upgrade(
     public boolean isAllowed(Collection<Upgrade> upgrades) {
         return upgrades.stream().filter(upgrade -> incompatible().contains(upgrade.getID())).findAny().isEmpty();
     }
-
 }
-

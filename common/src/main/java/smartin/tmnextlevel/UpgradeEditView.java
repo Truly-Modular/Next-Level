@@ -1,6 +1,7 @@
 package smartin.tmnextlevel;
 
 import com.mojang.serialization.JsonOps;
+import com.redpxnda.nucleus.util.Color;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -10,175 +11,221 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import smartin.miapi.client.gui.InteractAbleWidget;
 import smartin.miapi.client.gui.ScrollList;
+import smartin.miapi.client.gui.ScrollingTextWidget;
 import smartin.miapi.client.gui.SimpleButton;
 import smartin.miapi.modules.ItemModule;
 import smartin.miapi.modules.ModuleInstance;
 import smartin.miapi.modules.conditions.ConditionManager;
 import smartin.miapi.modules.edit_options.EditOption;
-import smartin.miapi.modules.properties.TagProperty;
+import smartin.miapi.modules.properties.tag.ModuleTagProperty;
 
-import java.util.ArrayList;
+import java.awt.*;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Consumer;
 
+/**
+ * UpgradeEditView now builds UpgradeRow widgets instead of plain buttons.
+ * It collects UpgradeSelections into a batch for preview/apply.
+ */
 @Environment(EnvType.CLIENT)
 public class UpgradeEditView extends InteractAbleWidget {
     private final ScrollList scrollList;
-    private final List<InteractAbleWidget> upgradeButtons = new ArrayList<>();
+    private final List<InteractAbleWidget> upgradeWidgets = new ArrayList<>();
     private final EditOption.EditContext context;
-    private final Consumer<UpgradeSelection> onChange;
-    private final Consumer<UpgradeSelection> onCraft;
-    private UpgradeSelection lastSelected = null;
+    private final java.util.function.Consumer<UpgradeBatch> onChange;
+    private final java.util.function.Consumer<UpgradeBatch> onCraft;
+
+    private UpgradeBatch lastBatch = null;
 
     private int availableXP = 0;
     private int usedLevels = 0;
-    int maxToNextLevel = 0;
+    private int maxToNextLevel = 0;
     private int availablePoints = 0;
-    int currentLVLXp = 0;
+    private int currentLVLXp = 0;
 
-    public UpgradeEditView(int x, int y, int width, int height, EditOption.EditContext context,
-                           Consumer<UpgradeSelection> onChange,
-                           Consumer<UpgradeSelection> onCraft) {
+    public UpgradeEditView(int x, int y, int width, int height,
+                           EditOption.EditContext context,
+                           java.util.function.Consumer<UpgradeBatch> onChange,
+                           java.util.function.Consumer<UpgradeBatch> onCraft) {
         super(x, y, width, height, Component.empty());
         this.context = context;
         this.onChange = onChange;
         this.onCraft = onCraft;
 
-        this.scrollList = new ScrollList(x, y, width, height - 24, upgradeButtons);
+        this.scrollList = new ScrollList(x, y, width, height - 24, upgradeWidgets);
         this.addChild(scrollList);
 
-// Fetch current item XP and upgrade count
+        // Fetch XP & points
         this.availableXP = getItemXP(context.getItemstack());
         this.usedLevels = UpgradeEditOption.getTotalUpgradeLevel(context.getItemstack());
 
-// Determine how many upgrade "points" the player can afford
         int xp = availableXP;
         int simulatedLevel = usedLevels;
         int upgradePoints = 0;
         int upgradeCost = Upgrade.xpCost(simulatedLevel);
+
         while (xp >= upgradeCost && xp > 0) {
             xp -= upgradeCost;
             simulatedLevel++;
             upgradePoints++;
             upgradeCost = Upgrade.xpCost(simulatedLevel);
         }
+
         final int points = upgradePoints;
         final int xpToNextPoint = Upgrade.xpCost(simulatedLevel) - xp;
         maxToNextLevel = xpToNextPoint;
         availablePoints = points;
         currentLVLXp = xp;
 
-
         // Points display
-        this.addChild(new InteractAbleWidget(x + 4, y + height - 13, 100, 12, Component.literal("")) {
-            @Override
-            public void renderWidget(GuiGraphics drawContext, int mouseX, int mouseY, float delta) {
-                drawContext.drawString(
-                        Minecraft.getInstance().font,
-                        "Points: " + points,
-                        getX(),
-                        getY(),
-                        0xFFFFFF,
-                        false
-                );
-            }
-        });
+        this.addChild(new ScrollingTextWidget(x + 4, y + height - 13, width, Component.translatable("tmnextlevel.ui.points", points)));
+
+        // XP progress bar
         int simulatedFinal = simulatedLevel;
-        // XP progress bar toward next point
+        int costForNext = Upgrade.xpCost(simulatedFinal);
+        int progress = (int) (((costForNext - xpToNextPoint) / (double) costForNext) * 100);
+        ScrollingTextWidget secondTextWidget = new ScrollingTextWidget(
+                x + width - 84, y + height - 13, 30,
+                Component.translatable("tmnextlevel.ui.progress", progress)
+        );
+        secondTextWidget.setOrientation(ScrollingTextWidget.Orientation.CENTERED);
+        secondTextWidget.hasTextShadow = false;
+        secondTextWidget.textColor = Color.BLACK.abgr();
         this.addChild(new InteractAbleWidget(x + width - 84, y + height - 15, 30, 12, Component.literal("")) {
             @Override
             public void renderWidget(GuiGraphics drawContext, int mouseX, int mouseY, float delta) {
-                int costForNext = Upgrade.xpCost(simulatedFinal);
-                int progress = (int) (((costForNext - xpToNextPoint) / (double) costForNext) * 100);
                 int barWidth = (int) (progress / 100.0 * 30);
                 drawContext.fill(getX(), getY(), getX() + 30, getY() + 10, 0xFF555555);
-                drawContext.fill(getX(), getY(), getX() + barWidth, getY() + 10, 0xFF00FF00);
-                drawContext.drawString(Minecraft.getInstance().font, progress + "%", getX() + 5, getY() + 2, 0xFFFFFFFF, false);
+                drawContext.fill(getX(), getY(), getX() + barWidth, getY() + 10, 0xFF00CC00);
+                drawContext.enableScissor(getX(), getY(), getX() + barWidth, getY() + 10);
+                //secondTextWidget.renderWidget(drawContext, mouseX, mouseY, delta);
+                drawContext.disableScissor();
             }
         });
+        ScrollingTextWidget widget = new ScrollingTextWidget(
+                x + width - 84, y + height - 13, 30,
+                Component.translatable("tmnextlevel.ui.progress", progress)
+        );
+        widget.setOrientation(ScrollingTextWidget.Orientation.CENTERED);
+        this.addChild(widget);
 
 
-        populateUpgrades(upgradePoints);
+        populateUpgrades();
 
+        // Apply button
         SimpleButton<Void> applyButton = new SimpleButton<>(x + width - 45, y + height - 18, 40, 16,
                 Component.translatable("miapi.ui.apply"), null, callback -> {
-            if (lastSelected != null) {
-                this.onCraft.accept(lastSelected);
-            }
+            List<UpgradeSelection> selections = collectSelections();
+            UpgradeBatch batch = new UpgradeBatch(selections);
+            this.lastBatch = batch;
+            this.onCraft.accept(batch);
         });
-
+        collectSelections();
         this.addChild(applyButton);
     }
 
-    private void populateUpgrades(int points) {
-        upgradeButtons.clear();
+    /**
+     * Collect UpgradeSelections from UpgradeRows into a batch.
+     */
+    public List<UpgradeSelection> collectSelections() {
+        List<UpgradeSelection> result = new ArrayList<>();
+        int totalCost = 0;
+        for (InteractAbleWidget widget : upgradeWidgets) {
+            if (widget instanceof UpgradeRow row) {
+                UpgradeSelection sel = row.toSelection();
+                totalCost += sel.levels() * row.upgrade.cost();
+                if (sel.levels() > 0) {
+                    result.add(sel);
+                }
+            }
+        }
+
+        UpgradeBatch batch = new UpgradeBatch(result);
+
+        for (InteractAbleWidget widget : upgradeWidgets) {
+            if (widget instanceof UpgradeRow row) {
+                row.availablePoints = availablePoints - totalCost;
+                row.applyBatch(batch);
+            }
+        }
+
+        return result;
+    }
+
+
+    /**
+     * Build UpgradeRows grouped by module.
+     */
+    private void populateUpgrades() {
+        upgradeWidgets.clear();
         ItemStack itemStack = context.getItemstack();
         List<ModuleInstance> modules = ItemModule.getModules(itemStack).allSubModules();
 
+        // 🔑 Collect all installed upgrades across all ModuleInstances first
+        Set<ResourceLocation> globallyInstalled = new HashSet<>();
+        Map<ResourceLocation, Integer> allUpgradeLevels = new HashMap<>();
+
         for (ModuleInstance instance : modules) {
-            List<InteractAbleWidget> buttonsForModule = new ArrayList<>();
-            ConditionManager.ConditionContext ctx = ConditionManager.playerContext(instance, context.getPlayer(), instance.properties);
+            if (instance.moduleData.containsKey(Upgrade.UPGRADE_ID)) {
+                var decodeResult = Upgrade.MODULE_UPGRADE_ID_CODEC
+                        .decode(JsonOps.INSTANCE, instance.moduleData.get(Upgrade.UPGRADE_ID))
+                        .result();
+                if (decodeResult.isPresent()) {
+                    Map<ResourceLocation, Integer> upgradeMap = decodeResult.get().getFirst();
+                    allUpgradeLevels.putAll(upgradeMap);
+                    globallyInstalled.addAll(upgradeMap.keySet());
+                }
+            }
+        }
+
+        // 🔑 Now build rows per module, but skip globally unique upgrades
+        for (ModuleInstance instance : modules) {
+            ConditionManager.ConditionContext ctx =
+                    ConditionManager.playerContext(instance, context.getPlayer(), instance.properties);
 
             Map<ResourceLocation, Integer> upgradeMap = Map.of();
-            List<Upgrade> existingUpgrades = new ArrayList<>();
             if (instance.moduleData.containsKey(Upgrade.UPGRADE_ID)) {
                 var decodeResult = Upgrade.MODULE_UPGRADE_ID_CODEC
                         .decode(JsonOps.INSTANCE, instance.moduleData.get(Upgrade.UPGRADE_ID))
                         .result();
                 if (decodeResult.isPresent()) {
                     upgradeMap = decodeResult.get().getFirst();
-                    for (ResourceLocation existingId : upgradeMap.keySet()) {
-                        Upgrade existingUpgrade = Upgrade.UPGRADE_MIAPI_REGISTRY.get(existingId);
-                        if (existingUpgrade != null) {
-                            existingUpgrades.add(existingUpgrade);
-                        }
-                    }
                 }
             }
 
+            List<Upgrade> existingUpgrades = new ArrayList<>();
+            for (ResourceLocation existingId : upgradeMap.keySet()) {
+                Upgrade existingUpgrade = Upgrade.UPGRADE_MIAPI_REGISTRY.get(existingId);
+                if (existingUpgrade != null) {
+                    existingUpgrades.add(existingUpgrade);
+                }
+            }
+
+            List<InteractAbleWidget> rowsForModule = new ArrayList<>();
             for (Map.Entry<ResourceLocation, Upgrade> entry : Upgrade.UPGRADE_MIAPI_REGISTRY.getFlatMap().entrySet()) {
                 ResourceLocation upgradeId = entry.getKey();
                 Upgrade upgrade = entry.getValue();
-
                 int currentLevel = upgradeMap.getOrDefault(upgradeId, 0);
+
+                // 🔑 Skip if globally unique & already installed anywhere
+                if (upgrade.unique() && globallyInstalled.contains(upgradeId) && currentLevel == 0) {
+                    continue;
+                }
 
                 if (upgrade.condition().isAllowed(ctx)
                     && currentLevel < upgrade.max()
                     && upgrade.isAllowed(existingUpgrades)
-                    && TagProperty.getTags(instance).contains(upgrade.moduleTag())) {
+                    && ModuleTagProperty.getTags(instance).contains(upgrade.moduleTag())) {
 
-                    UpgradeSelection selection = new UpgradeSelection(instance, upgradeId);
-                    SimpleButton<UpgradeSelection> button = new SimpleButton<>(
-                            getX() + 10, 0, getWidth() - 16, 16,
-                            upgrade.name().copy().append(" ").append(Component.translatable("miapi.upgrade.cost", upgrade.cost())),
-                            selection,
-                            sel -> {
-                                lastSelected = sel;
-                                onChange.accept(sel);
-                            }
-                    ) {
-                        public void renderHover(GuiGraphics drawContext, int mouseX, int mouseY, float delta) {
-                            super.renderHover(drawContext, mouseX, mouseY, delta);
-                            if (isMouseOver(mouseX, mouseY) && scrollList.isMouseOver(mouseX, mouseY)) {
-                                drawContext.renderTooltip(
-                                        Minecraft.getInstance().font,
-                                        points >= upgrade.cost() ?
-                                                List.of(upgrade.description()) :
-                                                List.of(Component.translatable("miapi.upgrade.cannot.afford"), upgrade.description()),
-                                        Optional.empty(),
-                                        mouseX,
-                                        mouseY);
-                            }
-                        }
-                    };
-                    button.isEnabled = points >= upgrade.cost();
-                    buttonsForModule.add(button);
+                    UpgradeRow row = new UpgradeRow(
+                            getX(), 0, getWidth() - 16,
+                            upgrade, instance, currentLevel
+                    );
+                    rowsForModule.add(row);
                 }
             }
 
-            if (!buttonsForModule.isEmpty()) {
+            if (!rowsForModule.isEmpty()) {
                 InteractAbleWidget moduleLabel = new InteractAbleWidget(getX() + 2, 0, getWidth() - 4, 16,
                         Component.literal(instance.getModuleName().getString()).withStyle(style -> style.withBold(true))) {
                     @Override
@@ -193,15 +240,17 @@ public class UpgradeEditView extends InteractAbleWidget {
                         );
                     }
                 };
-                upgradeButtons.add(moduleLabel);
-                upgradeButtons.addAll(buttonsForModule);
+                upgradeWidgets.add(moduleLabel);
+                upgradeWidgets.addAll(rowsForModule);
             }
         }
 
-        scrollList.setList(upgradeButtons);
+        scrollList.setList(upgradeWidgets);
     }
 
-    // Dummy methods for XP (to be implemented later)
+
+
+    // Dummy method for XP until implemented properly
     private int getItemXP(ItemStack stack) {
         return stack.getOrDefault(Upgrade.COMPONENT, 0);
     }
@@ -209,24 +258,32 @@ public class UpgradeEditView extends InteractAbleWidget {
     @Override
     public void renderWidget(GuiGraphics drawContext, int mouseX, int mouseY, float delta) {
         super.renderWidget(drawContext, mouseX, mouseY, delta);
+
+        // Fire preview every frame if something changed
+        List<UpgradeSelection> selections = collectSelections();
+        UpgradeBatch batch = new UpgradeBatch(selections);
+        if (!batch.equals(lastBatch)) {
+            lastBatch = batch;
+            onChange.accept(batch);
+        }
     }
 
     @Override
     public void renderHover(GuiGraphics drawContext, int mouseX, int mouseY, float delta) {
         super.renderHover(drawContext, mouseX, mouseY, delta);
-        if (isMouseOver(mouseX, mouseY) && !scrollList.isMouseOver(mouseX, mouseY) && (getX() + getHeight() - 20) > mouseX && (getY() + getWidth() - 35) > mouseY) {
+        if (isMouseOver(mouseX, mouseY) && !scrollList.isMouseOver(mouseX, mouseY)) {
             drawContext.renderTooltip(
                     Minecraft.getInstance().font,
                     List.of(
-                            Component.translatable("miapi.upgrade.hover.1", currentLVLXp, currentLVLXp + maxToNextLevel),
-                            Component.translatable("miapi.upgrade.hover.2", availablePoints),
-                            Component.translatable("miapi.upgrade.hover.3", usedLevels),
-                            Component.translatable("miapi.upgrade.hover.4", usedLevels),
-                            Component.translatable("miapi.upgrade.hover.5", usedLevels)
+                            Component.translatable("tmnextlevel.ui.hover.xp", currentLVLXp, currentLVLXp + maxToNextLevel),
+                            Component.translatable("tmnextlevel.ui.hover.points", availablePoints),
+                            Component.translatable("tmnextlevel.ui.hover.used", usedLevels)
                     ),
                     Optional.empty(),
                     mouseX,
-                    mouseY);
+                    mouseY
+            );
         }
     }
+
 }

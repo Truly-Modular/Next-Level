@@ -106,5 +106,10 @@
       <option name="name" value="maven8" />
       <option name="url" value="https://maven.parchmentmc.org" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="BlameJared Maven (CrT / Bookshelf)" />
+      <option name="name" value="BlameJared Maven (CrT / Bookshelf)" />
+      <option name="url" value="https://maven.blamejared.com" />
+    </remote-repository>
   </component>
 </project>

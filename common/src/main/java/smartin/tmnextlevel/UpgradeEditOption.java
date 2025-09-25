@@ -15,66 +15,33 @@ import smartin.miapi.modules.ModuleInstance;
 import smartin.miapi.modules.conditions.ConditionManager;
 import smartin.miapi.modules.edit_options.EditOption;
 import smartin.miapi.modules.edit_options.EditOptionIcon;
-import smartin.miapi.modules.properties.TagProperty;
-import smartin.miapi.modules.properties.util.ComponentApplyProperty;
+import smartin.miapi.modules.properties.tag.ModuleTagProperty;
 import smartin.miapi.network.Networking;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class UpgradeEditOption implements EditOption {
 
+    public static int spendAbleLevel(int oldLevel, int currentXp) {
+        int upgradePoints = 0;
+        int upgradeCost = Upgrade.xpCost(oldLevel);
+        while (currentXp >= upgradeCost && currentXp > 0) {
+            currentXp -= upgradeCost;
+            upgradePoints++;
+            upgradeCost = Upgrade.xpCost(oldLevel + upgradePoints);
+        }
+        return upgradePoints;
+    }
+
     @Override
     public ItemStack preview(FriendlyByteBuf buffer, EditContext editContext) {
-        UpgradeSelection selection = UpgradeSelection.STREAM_CODEC.decode(buffer);
-        Upgrade upgrade = Upgrade.UPGRADE_MIAPI_REGISTRY.get(selection.upgradeId());
-        if (upgrade == null) return editContext.getItemstack();
-
-        ItemStack itemStack = editContext.getItemstack().copy();
-        ModuleInstance instance = selection.resolveModule(itemStack).orElse(null);
-        if (instance == null) return itemStack;
-
-        ConditionManager.ConditionContext conditionCtx = ConditionManager.playerContext(instance, editContext.getPlayer(), instance.properties);
-        if (!upgrade.condition().isAllowed(conditionCtx)) return itemStack;
-
-        instance.clearCaches();
-        instance = instance.copy();
-
-        Map<ResourceLocation, Integer> rawUpgradeMap = new HashMap<>();
-        if (instance.moduleData.containsKey(Upgrade.UPGRADE_ID)) {
-            Upgrade.MODULE_UPGRADE_ID_CODEC.decode(JsonOps.INSTANCE, instance.moduleData.get(Upgrade.UPGRADE_ID))
-                    .result().ifPresent(pair -> rawUpgradeMap.putAll(pair.getFirst()));
-        }
-
-        int currentLevel = rawUpgradeMap.getOrDefault(selection.upgradeId(), 0);
-        if (currentLevel >= upgrade.max()) return itemStack;
-
-        // === XP Cost Logic ===
-        int xpCost = 0;
-        for (int i = 0; i < upgrade.cost(); i++) {
-            xpCost += Upgrade.xpCost(getTotalUpgradeLevel(itemStack) + i);
-        }
-        int currentXP = getItemXP(itemStack);
-        if (currentXP < xpCost) {
-            return itemStack; // Not enough XP to apply the upgrade
-        }
-
-        // Deduct XP (you’ll later persist this)
-        setItemXP(itemStack, currentXP - xpCost);
-
-        rawUpgradeMap.put(selection.upgradeId(), currentLevel + 1);
-
-        instance.moduleData.put(
-                Upgrade.UPGRADE_ID,
-                Upgrade.MODULE_UPGRADE_ID_CODEC.encodeStart(JsonOps.INSTANCE, rawUpgradeMap).getOrThrow()
-        );
-
-        instance.getRoot().writeToItem(itemStack);
-        instance.clearCaches();
-        ComponentApplyProperty.updateItemStack(itemStack, editContext.getPlayer().registryAccess());
-
-        return itemStack;
+        // Decode a full batch instead of a single selection
+        UpgradeBatch batch = UpgradeBatch.STREAM_CODEC.decode(buffer);
+        return batch.apply(editContext.getItemstack(), editContext.getPlayer(), editContext);
     }
 
     @Override
@@ -115,7 +82,7 @@ public class UpgradeEditOption implements EditOption {
                 if (upgrade.condition().isAllowed(ctx)
                     && currentLevel < upgrade.max()
                     && upgrade.isAllowed(existingUpgrades)
-                    && TagProperty.getTags(instance).contains(upgrade.moduleTag())) {
+                    && ModuleTagProperty.getTags(instance).contains(upgrade.moduleTag())) {
                     return true;
                 }
             }
@@ -128,20 +95,22 @@ public class UpgradeEditOption implements EditOption {
     @Environment(EnvType.CLIENT)
     public InteractAbleWidget getGui(int x, int y, int width, int height, EditContext editContext) {
         return new UpgradeEditView(x, y, width, height, editContext,
-                (selection) -> {
+                (batch) -> {
+                    // send batch to preview
                     FriendlyByteBuf buffer = Networking.createBuffer();
-                    UpgradeSelection.STREAM_CODEC.encode(buffer, selection);
+                    UpgradeBatch.STREAM_CODEC.encode(buffer, batch);
                     editContext.preview(buffer);
                 },
-                (selection) -> {
+                (batch) -> {
+                    // send batch to craft/apply
                     FriendlyByteBuf buffer = Networking.createBuffer();
-                    UpgradeSelection.STREAM_CODEC.encode(buffer, selection);
+                    UpgradeBatch.STREAM_CODEC.encode(buffer, batch);
                     editContext.craft(buffer);
                 });
     }
 
-    @Environment(EnvType.CLIENT)
     @Override
+    @Environment(EnvType.CLIENT)
     public InteractAbleWidget getIconGui(int x, int y, int width, int height, Consumer<EditOption> select, Supplier<EditOption> getSelected) {
         return new EditOptionIcon(x, y, width, height, select, getSelected, Miapi.id("tmnextlevel", "textures/gui/background.png"), 0, 0, 64, 64, "miapi.ui.edit_option.hover.upgrade", this);
     }

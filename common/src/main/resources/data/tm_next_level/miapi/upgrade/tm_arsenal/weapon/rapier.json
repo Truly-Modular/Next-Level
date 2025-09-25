@@ -13,11 +13,11 @@
                 "armor_pen": [
                     {
                         "operation": "**",
-                        "value": "[module_upgrade.tm_next_level.tm_arsenal/rapier]/20"
+                        "value": "[module_upgrade.tm_next_level.tm_arsenal/weapon/rapier]/20"
                     },
                     {
                         "operation": "+",
-                        "value": "5+[module_upgrade.tm_next_level.tm_arsenal/rapier]*2"
+                        "value": "5+[module_upgrade.tm_next_level.tm_arsenal/weapon/rapier]*2"
                     }
                 ]
             }

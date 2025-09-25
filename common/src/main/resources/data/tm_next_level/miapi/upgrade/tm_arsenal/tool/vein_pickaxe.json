@@ -1,0 +1,38 @@
+{
+    "tag": "pickaxe_head",
+    "max": "1",
+    "cost": 2,
+    "properties": {
+        "1": {
+            "merge": {
+                "module_stats": {
+                    "vein_blocks": "[material.tier]*2+3"
+                },
+                "tag": [
+                    "vein_mining"
+                ],
+                "mining_shape": [
+                    {
+                        "condition": {
+                            "type": "block_tag",
+                            "tags": [
+                                "c:ores"
+                            ]
+                        },
+                        "mode": {
+                            "type": "staggered"
+                        },
+                        "modifier": {
+                            "require_same": true
+                        },
+                        "shape": {
+                            "type": "vein",
+                            "size": 100,
+                            "max": "[module.vein_blocks]"
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -31,6 +31,7 @@ public final class Tmnextlevel {
         );
 
         RegistryInventory.EDIT_OPTION_MIAPI_REGISTRY.register(Miapi.id("module_upgrades"), new UpgradeEditOption());
+        RegistryInventory.MODULE_PROPERTY_MIAPI_REGISTRY.register(ResourceLocation.fromNamespaceAndPath(MOD_ID,"runtime_upgrade_transfer_property"),new UpgradeProperty());
 
         StatResolver.registerResolver("module_upgrade", (data, instance) -> {
             if (instance.moduleData.containsKey(Upgrade.UPGRADE_ID)) {

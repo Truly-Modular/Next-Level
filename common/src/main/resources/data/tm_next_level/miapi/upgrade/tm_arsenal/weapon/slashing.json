@@ -5,7 +5,7 @@
     },
     "max": "5",
     "incompatible": [
-        "tm_next_level:tm_arsenal/rapier"
+        "tm_next_level:tm_arsenal/weapon/rapier"
     ],
     "properties": {
         "1": {
@@ -17,7 +17,7 @@
                     },
                     {
                         "operation": "+",
-                        "value": "[module_upgrade.tm_next_level.tm_arsenal/slashing]/2"
+                        "value": "[module_upgrade.tm_next_level.tm_arsenal/weapon/slashing]/2"
                     }
                 ]
             }
@@ -31,7 +31,7 @@
                     },
                     {
                         "operation": "+",
-                        "value": "[module_upgrade.tm_next_level.tm_arsenal/slashing]/2"
+                        "value": "[module_upgrade.tm_next_level.tm_arsenal/weapon/slashing]/2"
                     }
                 ]
             }
@@ -45,7 +45,7 @@
                     },
                     {
                         "operation": "+",
-                        "value": "[module_upgrade.tm_next_level.tm_arsenal/slashing]/2"
+                        "value": "[module_upgrade.tm_next_level.tm_arsenal/weapon/slashing]/2"
                     }
                 ]
             }

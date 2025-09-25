@@ -1,0 +1,21 @@
+{
+    "tag": "sweep",
+    "condition": {
+        "type": "true"
+    },
+    "max": "3",
+    "properties": {
+        "1": {
+            "merge": {
+                "attributes": [
+                    {
+                        "attribute": "player.sweeping_damage_ratio",
+                        "value": "0.1",
+                        "operation": "+",
+                        "slot": "mainhand"
+                    }
+                ]
+            }
+        }
+    }
+}
