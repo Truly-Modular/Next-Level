@@ -1,0 +1,19 @@
+{
+    "tag": "leg",
+    "condition": { "type": "true" },
+    "max": 3,
+    "cost": 1,
+    "properties": {
+        "1": {
+            "merge": {
+                "attributes": [
+                    {
+                        "attribute": "generic.jump_strength",
+                        "value": "0.15 * [module_upgrade.tm_next_level.tm_armory/armor/legs_jump_strength]",
+                        "operation": "+"
+                    }
+                ]
+            }
+        }
+    }
+}

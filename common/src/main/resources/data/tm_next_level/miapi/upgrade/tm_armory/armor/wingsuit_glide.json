@@ -1,0 +1,19 @@
+{
+    "tag": "wingsuit",
+    "condition": { "type": "true" },
+    "max": 3,
+    "cost": 1,
+    "properties": {
+        "1": {
+            "merge": {
+                "attributes": [
+                    {
+                        "attribute": "miapi:generic.elytra_glide_efficiency",
+                        "value": "5 * [module_upgrade.tm_next_level.tm_armory/armor/wingsuit_glide]",
+                        "operation": "+"
+                    }
+                ]
+            }
+        }
+    }
+}

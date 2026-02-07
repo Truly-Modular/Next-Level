@@ -3,17 +3,41 @@
     "condition": {
         "type": "true"
     },
-    "max": "5",
     "properties": {
         "1": {
             "merge": {
                 "mining_level": {
                     "hoe": {
                         "allowed": ["#minecraft:mineable/hoe"],
-                        "speed": {
-                            "operation": "**",
-                            "value": "[module_upgrade.tm_next_level.tm_arsenal/tool/hoe]/10"
-                        }
+                        "speed": [
+                            {
+                                "operation": "+",
+                                "value": "0.5 * [module_upgrade.tm_next_level.tm_arsenal/tool/hoe]"
+                            },
+                            {
+                                "operation": "**",
+                                "value": "0.05 * [module_upgrade.tm_next_level.tm_arsenal/tool/hoe]"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "5": {
+            "merge": {
+                "mining_level": {
+                    "hoe": {
+                        "allowed": ["#minecraft:mineable/hoe"],
+                        "speed": [
+                            {
+                                "operation": "+",
+                                "value": "2.5 + log([module_upgrade.tm_next_level.tm_arsenal/tool/hoe]-5) / 2"
+                            },
+                            {
+                                "operation": "**",
+                                "value": "0.25"
+                            }
+                        ]
                     }
                 }
             }

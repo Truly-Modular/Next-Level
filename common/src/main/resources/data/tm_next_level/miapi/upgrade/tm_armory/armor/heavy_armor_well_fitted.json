@@ -1,0 +1,39 @@
+{
+    "tag": "heavy_armor",
+    "condition": {
+        "type": "not",
+        "condition": {
+            "type": "or",
+            "conditions": [
+                {
+                    "type": "tag",
+                    "tag": "arm"
+                },
+                {
+                    "type": "tag",
+                    "tag": "leg"
+                }
+            ]
+        }
+    },
+    "max": 3,
+    "cost": 1,
+    "properties": {
+        "1": {
+            "merge": {
+                "attributes": [
+                    {
+                        "attribute": "miapi:generic.swim_speed",
+                        "value": "0.01*[module_upgrade.tm_next_level.tm_armory/armor/heavy_armor_well_fitted]",
+                        "operation": "+"
+                    },
+                    {
+                        "attribute": "miapi:generic.elytra_glide_efficiency",
+                        "value": "2*[module_upgrade.tm_next_level.tm_armory/armor/heavy_armor_well_fitted]",
+                        "operation": "+"
+                    }
+                ]
+            }
+        }
+    }
+}

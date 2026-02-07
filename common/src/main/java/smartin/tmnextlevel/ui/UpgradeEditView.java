@@ -1,4 +1,4 @@
-package smartin.tmnextlevel;
+package smartin.tmnextlevel.ui;
 
 import com.mojang.serialization.JsonOps;
 import com.redpxnda.nucleus.util.Color;
@@ -18,8 +18,11 @@ import smartin.miapi.modules.ModuleInstance;
 import smartin.miapi.modules.conditions.ConditionManager;
 import smartin.miapi.modules.edit_options.EditOption;
 import smartin.miapi.modules.properties.tag.ModuleTagProperty;
+import smartin.tmnextlevel.Upgrade;
+import smartin.tmnextlevel.selection.UpgradeBatch;
+import smartin.tmnextlevel.UpgradeEditOption;
+import smartin.tmnextlevel.selection.UpgradeSelection;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 

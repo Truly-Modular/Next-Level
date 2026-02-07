@@ -1,6 +1,12 @@
 package smartin.tmnextlevel;
 
+import com.ezylang.evalex.EvaluationException;
+import com.ezylang.evalex.Expression;
+import com.ezylang.evalex.parser.ParseException;
 import com.mojang.serialization.JsonOps;
+import com.redpxnda.nucleus.config.ConfigBuilder;
+import com.redpxnda.nucleus.config.ConfigManager;
+import com.redpxnda.nucleus.config.ConfigType;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
 import io.netty.handler.codec.DecoderException;
 import net.minecraft.resources.ResourceLocation;
@@ -31,7 +37,7 @@ public final class Tmnextlevel {
         );
 
         RegistryInventory.EDIT_OPTION_MIAPI_REGISTRY.register(Miapi.id("module_upgrades"), new UpgradeEditOption());
-        RegistryInventory.MODULE_PROPERTY_MIAPI_REGISTRY.register(ResourceLocation.fromNamespaceAndPath(MOD_ID,"runtime_upgrade_transfer_property"),new UpgradeProperty());
+        RegistryInventory.MODULE_PROPERTY_MIAPI_REGISTRY.register(ResourceLocation.fromNamespaceAndPath(MOD_ID, "runtime_upgrade_transfer_property"), new UpgradeProperty());
 
         StatResolver.registerResolver("module_upgrade", (data, instance) -> {
             if (instance.moduleData.containsKey(Upgrade.UPGRADE_ID)) {
@@ -82,5 +88,25 @@ public final class Tmnextlevel {
         CommandRegistrationEvent.EVENT.register((serverCommandSourceCommandDispatcher, registryAccess, listener) -> {
             XpCommands.register(serverCommandSourceCommandDispatcher);
         });
+        ConfigManager.register(
+                ConfigBuilder
+                        .automatic(NextLevelConfig.class)
+                        .automaticScreen()
+                        .type(ConfigType.SERVER_CLIENT_SYNCED)
+                        .id(ResourceLocation.fromNamespaceAndPath(MOD_ID,"config"))
+                        .fileLocation("tm_next_level")
+                        .creator(NextLevelConfig::new)
+                        .updateListener((s) -> {
+                            Expression nextExpression = new Expression(s.levelToXp);
+                            try {
+                                for (int x = 0; x < 100; x++) {
+                                    nextExpression.and("x", x).evaluate().getNumberValue().intValue();
+                                }
+                            } catch (EvaluationException | ParseException e) {
+                                Miapi.LOGGER.error("could not parse function for XP", e);
+                            }
+                            Upgrade.expression = nextExpression;
+                        })
+                        .build());
     }
 }

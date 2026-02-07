@@ -1,4 +1,4 @@
-package smartin.tmnextlevel;
+package smartin.tmnextlevel.ui;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -10,8 +10,9 @@ import smartin.miapi.client.gui.ScrollingTextWidget;
 import smartin.miapi.client.gui.SimpleButton;
 import smartin.miapi.client.gui.crafting.CraftingScreen;
 import smartin.miapi.modules.ModuleInstance;
-
-import java.util.List;
+import smartin.tmnextlevel.Upgrade;
+import smartin.tmnextlevel.selection.UpgradeBatch;
+import smartin.tmnextlevel.selection.UpgradeSelection;
 
 @Environment(EnvType.CLIENT)
 public class UpgradeRow extends InteractAbleWidget {
@@ -21,8 +22,8 @@ public class UpgradeRow extends InteractAbleWidget {
     private final int currentLevel;
     private final int maxLevel;
 
-    private SimpleButton<Void> plusButton;
-    private SimpleButton<Void> minusButton;
+    private final SimpleButton<Void> plusButton;
+    private final SimpleButton<Void> minusButton;
 
     private final ScrollingTextWidget nameCostWidget;
     private final ScrollingTextWidget levelWidget;
@@ -73,7 +74,7 @@ public class UpgradeRow extends InteractAbleWidget {
         minusButton.isEnabled = pendingLevels > 0;
         plusButton.isEnabled =
                 currentLevel + pendingLevels < maxLevel &&
-                availablePoints >= upgrade.cost() + pendingLevels * upgrade.cost();
+                availablePoints >= upgrade.cost();
         refreshLabels();
     }
 

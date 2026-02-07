@@ -1,4 +1,4 @@
-package smartin.tmnextlevel;
+package smartin.tmnextlevel.selection;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
@@ -14,6 +14,8 @@ import smartin.miapi.modules.ModuleInstance;
 import smartin.miapi.modules.conditions.ConditionManager;
 import smartin.miapi.modules.edit_options.EditOption;
 import smartin.miapi.modules.properties.util.ComponentApplyProperty;
+import smartin.tmnextlevel.Upgrade;
+import smartin.tmnextlevel.UpgradeEditOption;
 
 import java.util.HashMap;
 import java.util.List;

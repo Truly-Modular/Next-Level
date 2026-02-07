@@ -1,0 +1,8 @@
+{
+    "tag": "tm_archery:bow/handle/sniper",
+    "merge": {
+        "module_tag": [
+            "bow_handle"
+        ]
+    }
+}

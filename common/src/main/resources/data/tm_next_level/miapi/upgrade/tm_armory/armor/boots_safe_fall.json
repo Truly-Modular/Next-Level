@@ -1,0 +1,21 @@
+{
+    "tag": "boot",
+    "condition": {
+        "type": "true"
+    },
+    "max": 3,
+    "cost": 1,
+    "properties": {
+        "1": {
+            "merge": {
+                "attributes": [
+                    {
+                        "attribute": "minecraft:generic.safe_fall_distance",
+                        "value": "1 * [module_upgrade.tm_next_level.tm_armory/armor/boots_safe_fall]",
+                        "operation": "+"
+                    }
+                ]
+            }
+        }
+    }
+}

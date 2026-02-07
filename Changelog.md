@@ -1,0 +1,35 @@
+## 1.0 Truly Modular Next Level
+- xp gain system based on durability loss
+  - **Arsenal**
+  - Weapons 
+    - sharp (damage)
+    - slashing (slashing damage (low armor bonus dmg))
+    - sweep (aoe dmg)
+    - armor pen 
+  - Tools
+    - each mining type speed
+    - vein pickaxe
+    - hammer/cutter/excavator aoe
+  - Abilities
+    - Heavy Attack (Heavy Blades)
+- **Armory**
+  - Base Armor increase
+  - Heavy
+    - increased heavy armor
+    - decrease heavy armor debuff
+  - scuba swim speed increases
+  - pieces:
+    - Boots min save fall distance
+    - fins (arm swim speed)
+    - helmet oxygen
+    - leg jump height
+    - leg step height
+  - wingsuit
+    - glide
+    - turn
+- **Archery**
+  - Bow
+    - Arm draw time
+    - Arm velocity
+    - Handle accuracy
+    - Handle movement

@@ -1,0 +1,34 @@
+{
+    "tag": "heavy_armor",
+    "condition": {
+        "type": "not",
+        "condition": {
+            "type": "or",
+            "conditions": [
+                {
+                    "type": "tag",
+                    "tag": "arm"
+                },
+                {
+                    "type": "tag",
+                    "tag": "leg"
+                }
+            ]
+        }
+    },
+    "max": 3,
+    "cost": 2,
+    "properties": {
+        "1": {
+            "merge": {
+                "attributes": [
+                    {
+                        "attribute": "minecraft:generic.armor_toughness",
+                        "value": "1 * [module_upgrade.tm_next_level.tm_armory/armor/heavy_armor]",
+                        "operation": "+"
+                    }
+                ]
+            }
+        }
+    }
+}

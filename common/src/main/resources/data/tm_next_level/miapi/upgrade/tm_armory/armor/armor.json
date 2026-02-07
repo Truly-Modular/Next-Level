@@ -1,0 +1,54 @@
+{
+    "tag": "armor",
+    "condition": {
+        "type": "not",
+        "condition": {
+            "type": "or",
+            "conditions": [
+                {
+                    "type": "tag",
+                    "tag": "arm"
+                },
+                {
+                    "type": "tag",
+                    "tag": "leg"
+                }
+            ]
+        }
+    },
+    "cost": 1,
+    "properties": {
+        "1": {
+            "merge": {
+                "attributes": [
+                    {
+                        "attribute": "minecraft:generic.armor",
+                        "value": "0.1 * [module_upgrade.tm_next_level.tm_armory/armor/armor]",
+                        "operation": "+"
+                    },
+                    {
+                        "attribute": "minecraft:generic.armor",
+                        "value": "0.05 * [module_upgrade.tm_next_level.tm_armory/armor/armor]",
+                        "operation": "**"
+                    }
+                ]
+            }
+        },
+        "6": {
+            "merge": {
+                "attributes": [
+                    {
+                        "attribute": "minecraft:generic.armor",
+                        "value": "0.5 + 0.1 * log([module_upgrade.tm_next_level.tm_armory/armor/armor]-5)",
+                        "operation": "+"
+                    },
+                    {
+                        "attribute": "minecraft:generic.armor",
+                        "value": "0.25",
+                        "operation": "**"
+                    }
+                ]
+            }
+        }
+    }
+}

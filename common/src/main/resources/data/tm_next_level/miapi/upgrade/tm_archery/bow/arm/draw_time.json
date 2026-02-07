@@ -1,0 +1,21 @@
+{
+    "tag": "bow_arms",
+    "condition": {
+        "type": "true"
+    },
+    "max": "5",
+    "incompatible": [
+    ],
+    "properties": {
+        "1": {
+            "merge": {
+                "draw_time": [
+                    {
+                        "value": "-0.05 * [module_upgrade.tm_next_level.tm_archery/bow/arm/draw_time]",
+                        "operation": "**"
+                    }
+                ]
+            }
+        }
+    }
+}

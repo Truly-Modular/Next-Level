@@ -26,13 +26,13 @@ public abstract class ItemstackMixin {
     )
     public void tm_next_level$update_message(int damage, ServerLevel serverLevel, ServerPlayer serverPlayer, Consumer<Item> consumer, CallbackInfo ci) {
         ItemStack stack = (ItemStack) (Object) this;
-        if (ModularItem.isModularItem(stack)) {
+        if (ModularItem.isModularItem(stack) && serverPlayer != null) {
             int usedLevels = UpgradeEditOption.getTotalUpgradeLevel(stack);
             int oldXP = getItemXP(stack);
             int newXp = damage + oldXP;
 
             if (spendAbleLevel(usedLevels, oldXP) < spendAbleLevel(usedLevels, newXp)) {
-                serverPlayer.sendSystemMessage(Component.translatable("miapi.tm_next_level.upgrade_chat_message",stack.getDisplayName(),spendAbleLevel(usedLevels, newXp)));
+                serverPlayer.sendSystemMessage(Component.translatable("miapi.tm_next_level.upgrade_chat_message", stack.getDisplayName(), spendAbleLevel(usedLevels, newXp)));
             }
         }
     }

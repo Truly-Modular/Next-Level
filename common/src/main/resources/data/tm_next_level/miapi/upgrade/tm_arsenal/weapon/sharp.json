@@ -3,9 +3,7 @@
     "condition": {
         "type": "true"
     },
-    "max": "5",
     "incompatible": [
-        "tm_next_level:tm_arsenal/weapon/slashing"
     ],
     "properties": {
         "1": {
@@ -13,13 +11,31 @@
                 "attributes": [
                     {
                         "attribute": "generic.attack_damage",
-                        "value": "0.5",
+                        "value": "0.5 * [module_upgrade.tm_next_level.tm_arsenal/weapon/sharp]",
                         "operation": "+",
                         "slot": "mainhand"
                     },
                     {
                         "attribute": "generic.attack_damage",
-                        "value": "0.05",
+                        "value": "0.05 * [module_upgrade.tm_next_level.tm_arsenal/weapon/sharp]",
+                        "operation": "**",
+                        "slot": "mainhand"
+                    }
+                ]
+            }
+        },
+        "5": {
+            "merge": {
+                "attributes": [
+                    {
+                        "attribute": "generic.attack_damage",
+                        "value": "2.5 + log([module_upgrade.tm_next_level.tm_arsenal/weapon/sharp]-4)/2",
+                        "operation": "+",
+                        "slot": "mainhand"
+                    },
+                    {
+                        "attribute": "generic.attack_damage",
+                        "value": "0.25",
                         "operation": "**",
                         "slot": "mainhand"
                     }

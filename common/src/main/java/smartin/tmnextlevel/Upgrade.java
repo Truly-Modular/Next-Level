@@ -1,5 +1,8 @@
 package smartin.tmnextlevel;
 
+import com.ezylang.evalex.EvaluationException;
+import com.ezylang.evalex.Expression;
+import com.ezylang.evalex.parser.ParseException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.component.DataComponentType;
@@ -38,7 +41,7 @@ public record Upgrade(
             ConditionManager.CONDITION_CODEC_DIRECT.optionalFieldOf("condition", new TrueCondition()).forGetter(Upgrade::condition),
             Codec.unboundedMap(INT_CODEC, PropertyHolder.MAP_CODEC.codec()).fieldOf("properties").forGetter(Upgrade::properties),
             ResourceLocation.CODEC.listOf().optionalFieldOf("incompatible", List.of()).forGetter(Upgrade::incompatible),
-            INT_CODEC.optionalFieldOf("max", 0).forGetter(Upgrade::max),
+            INT_CODEC.optionalFieldOf("max", Integer.MAX_VALUE).forGetter(Upgrade::max),
             INT_CODEC.optionalFieldOf("cost", 1).forGetter(Upgrade::cost),
             Codec.BOOL.optionalFieldOf("unique", true).forGetter(Upgrade::unique)
     ).apply(instance, Upgrade::new));
@@ -50,9 +53,14 @@ public record Upgrade(
             .persistent(ExtraCodecs.NON_NEGATIVE_INT)
             .networkSynchronized(ByteBufCodecs.VAR_INT).build();
 
-    // Dummy XP cost logic (double per level)
-    public static int xpCost(int oldUpgrades) {
-        return (int) Math.pow(2, oldUpgrades) * 10 + 100;
+    public static Expression expression = new Expression("(x^2)*10+100");
+
+    public static int xpCost(int level) {
+        try {
+            return expression.and("x", level).evaluate().getNumberValue().intValue();
+        } catch (EvaluationException | ParseException e) {
+            return 100;
+        }
     }
 
     public Component name() {

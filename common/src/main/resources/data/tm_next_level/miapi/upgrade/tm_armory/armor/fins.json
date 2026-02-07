@@ -1,0 +1,19 @@
+{
+    "tag": "arms",
+    "condition": { "type": "true" },
+    "max": 3,
+    "cost": 1,
+    "properties": {
+        "1": {
+            "merge": {
+                "attributes": [
+                    {
+                        "attribute": "miapi:generic.swim_speed",
+                        "value": "0.05 * [module_upgrade.tm_next_level.tm_armory/armor/fins]",
+                        "operation": "+"
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -3,17 +3,41 @@
     "condition": {
         "type": "true"
     },
-    "max": "5",
     "properties": {
         "1": {
             "merge": {
                 "mining_level": {
                     "shovel": {
                         "allowed": ["#minecraft:mineable/shovel"],
-                        "speed": {
-                            "operation": "**",
-                            "value": "[module_upgrade.tm_next_level.tm_arsenal/tool/shovel]/10"
-                        }
+                        "speed": [
+                            {
+                                "operation": "+",
+                                "value": "0.5 * [module_upgrade.tm_next_level.tm_arsenal/tool/shovel]"
+                            },
+                            {
+                                "operation": "**",
+                                "value": "0.05 * [module_upgrade.tm_next_level.tm_arsenal/tool/shovel]"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "5": {
+            "merge": {
+                "mining_level": {
+                    "shovel": {
+                        "allowed": ["#minecraft:mineable/shovel"],
+                        "speed": [
+                            {
+                                "operation": "+",
+                                "value": "2.5 + log([module_upgrade.tm_next_level.tm_arsenal/tool/shovel]-5) / 2"
+                            },
+                            {
+                                "operation": "**",
+                                "value": "0.25"
+                            }
+                        ]
                     }
                 }
             }

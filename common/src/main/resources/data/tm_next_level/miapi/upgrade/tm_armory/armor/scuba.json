@@ -1,0 +1,34 @@
+{
+    "tag": "scuba",
+    "condition": {
+        "type": "not",
+        "condition": {
+            "type": "or",
+            "conditions": [
+                {
+                    "type": "tag",
+                    "tag": "arm"
+                },
+                {
+                    "type": "tag",
+                    "tag": "leg"
+                }
+            ]
+        }
+    },
+    "max": 4,
+    "cost": 1,
+    "properties": {
+        "1": {
+            "merge": {
+                "attributes": [
+                    {
+                        "attribute": "miapi:generic.swim_speed",
+                        "value": "0.1 * [module_upgrade.tm_next_level.tm_armory/armor/scuba]",
+                        "operation": "+"
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "tag": "chest",
+    "condition": {
+        "type": "not",
+        "condition": {
+            "type": "tag",
+            "tag": "arm"
+        }
+    },
+    "max": 3,
+    "cost": 3,
+    "properties": {
+        "1": {
+            "merge": {
+                "attributes": [
+                    {
+                        "attribute": "minecraft:generic.max_health",
+                        "value": "2 * [module_upgrade.tm_next_level.tm_armory/armor/chest_health]",
+                        "operation": "+"
+                    }
+                ]
+            }
+        }
+    }
+}

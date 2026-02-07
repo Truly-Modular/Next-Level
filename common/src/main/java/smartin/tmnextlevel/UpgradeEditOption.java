@@ -17,6 +17,8 @@ import smartin.miapi.modules.edit_options.EditOption;
 import smartin.miapi.modules.edit_options.EditOptionIcon;
 import smartin.miapi.modules.properties.tag.ModuleTagProperty;
 import smartin.miapi.network.Networking;
+import smartin.tmnextlevel.selection.UpgradeBatch;
+import smartin.tmnextlevel.ui.UpgradeEditView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +70,7 @@ public class UpgradeEditOption implements EditOption {
                         Upgrade existingUpgrade = Upgrade.UPGRADE_MIAPI_REGISTRY.get(existingId);
                         if (existingUpgrade != null) {
                             existingUpgrades.add(existingUpgrade);
+                            return true;
                         }
                     }
                 }

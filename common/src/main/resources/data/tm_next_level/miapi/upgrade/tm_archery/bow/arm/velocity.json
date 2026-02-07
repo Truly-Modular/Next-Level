@@ -1,0 +1,23 @@
+{
+    "tag": "bow_arms",
+    "condition": {
+        "type": "true"
+    },
+    "max": "5",
+    "incompatible": [
+    ],
+    "properties": {
+        "1": {
+            "merge": {
+                "attributes": [
+                    {
+                        "attribute": "miapi:generic.projectile_speed",
+                        "value": "0.05 * [module_upgrade.tm_next_level.tm_archery/bow/arm/velocity]",
+                        "operation": "+",
+                        "slot": "mainhand"
+                    }
+                ]
+            }
+        }
+    }
+}

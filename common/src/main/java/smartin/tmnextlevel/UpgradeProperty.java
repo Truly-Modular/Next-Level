@@ -32,6 +32,9 @@ public class UpgradeProperty implements CraftingProperty, ModuleProperty<Void> {
     public ItemStack preview(ItemStack old, ItemStack crafting, Player player, @Nullable ModularWorkBenchEntity bench, CraftAction craftAction, ItemModule module, List<ItemStack> inventory, Map<ResourceLocation, JsonElement> data) {
         ModuleInstance oldModule = craftAction.getModifyingModuleInstance(old);
         ModuleInstance nextModule = craftAction.getModifyingModuleInstance(crafting);
+        if(nextModule==null || oldModule==null){
+            return crafting;
+        }
 
         // decode upgrades from oldModule
         Map<ResourceLocation, Integer> oldUpgrades = Map.of();

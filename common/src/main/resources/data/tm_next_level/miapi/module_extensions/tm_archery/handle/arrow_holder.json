@@ -1,0 +1,8 @@
+{
+    "tag": "tm_archery:bow/handle/arrow_holder",
+    "merge": {
+        "module_tag": [
+            "bow_handle"
+        ]
+    }
+}

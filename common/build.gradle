@@ -3,10 +3,7 @@ architectury {
 }
 
 repositories {
-    maven {
-        url 'http://trulymodular.dedyn.io/maven'
-        allowInsecureProtocol = true
-    }
+    maven { url 'https://jitpack.io' }
     maven { url 'https://maven.uuid.gg/releases' }
     maven { url 'https://maven.terraformersmc.com/' }
     maven { url 'https://maven.theillusivec4.top/' }
@@ -47,5 +44,5 @@ dependencies {
 
     modImplementation "dev.architectury:architectury:$rootProject.architectury_api_version"
 
-    modApi("com.Truly-Modular.Modular-Item-API:Truly-Modular-miapi-common:${rootProject.miapi_version}-1.21")
+    modApi( "com.github.Truly-Modular.Modular-Item-API:Truly-Modular-miapi-common:${rootProject.miapi_version}")
 }

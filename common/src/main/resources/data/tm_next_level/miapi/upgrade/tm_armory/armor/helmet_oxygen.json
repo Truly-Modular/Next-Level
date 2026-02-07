@@ -1,0 +1,19 @@
+{
+    "tag": "helmet",
+    "condition": { "type": "true" },
+    "max": 2,
+    "cost": 1,
+    "properties": {
+        "1": {
+            "merge": {
+                "attributes": [
+                    {
+                        "attribute": "minecraft:generic.oxygen_bonus",
+                        "value": "40 * [module_upgrade.tm_next_level.tm_armory/armor/helmet_oxygen]",
+                        "operation": "+"
+                    }
+                ]
+            }
+        }
+    }
+}

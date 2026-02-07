@@ -1,0 +1,37 @@
+{
+    "tag": "bow",
+    "condition": {
+        "type": "or",
+        "conditions": [
+            {
+                "type": "module",
+                "module": "tm_archery:bow/handle/sniper"
+            },
+            {
+                "type": "module",
+                "module": "tm_archery:bow/handle/normal"
+            },
+            {
+                "type": "module",
+                "module": "tm_archery:bow/handle/arrow_holder"
+            }
+        ]
+    },
+    "max": "5",
+    "incompatible": [
+    ],
+    "properties": {
+        "1": {
+            "merge": {
+                "attributes": [
+                    {
+                        "attribute": "miapi:generic.projectile_accuracy",
+                        "value": "0.1 * [module_upgrade.tm_next_level.tm_archery/bow/handle/accuracy]",
+                        "operation": "+",
+                        "slot": "mainhand"
+                    }
+                ]
+            }
+        }
+    }
+}
